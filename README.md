@@ -92,3 +92,5 @@
 ## 优化
 
 - css 独立出来，插件：extract-text-webpack-plugin (webpack4用 npm i -D extract-text-webpack-plugin@next)
+
+- 配置 config.optimization.splitChunks 把第三方库的 JS 独立出来

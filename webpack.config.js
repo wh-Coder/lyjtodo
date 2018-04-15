@@ -71,6 +71,10 @@ if(isDev) {
         open: true
     }
 } else {
+    config.entry = {
+        app: path.join(__dirname, 'src/todo_index.js'),
+        vendor: ['vue']
+    }
     config.output.filename = '[name].[chunkhash:8].js'
     config.module.rules.push({
         test: /\.styl/,
@@ -89,8 +93,15 @@ if(isDev) {
         })
     })
     config.plugins.push(
-        new ExtractPlugin('styles.[hash:8].css')
+        new ExtractPlugin('styles.[md5:contenthash:hex:8].css')
     )
+    // webpack4 的新写法
+    config.optimization = {
+        splitChunks: {
+            name: 'vendor'
+        },
+        runtimeChunk: true
+    }
 }
 
 module.exports = config
