@@ -58,3 +58,29 @@
 
 - 设置跨平台常用用的依赖：cross-env
 
+## vue2
+
+- 数据绑定
+
+- vue 单文件开发，组件化框架
+
+- API重点
+
+    - 生命周期方法
+
+    - computed
+
+- 继续优化 webpack
+
+    - postcss-loader
+
+    - autoprefixer
+
+    - babel-loader
+
+    - babel-core
+
+    - babel-preset-env
+
+    - babel-plugin-transform-vue-jsx
+
