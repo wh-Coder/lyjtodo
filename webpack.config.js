@@ -2,6 +2,8 @@
 const path = require('path')
 const HTMLPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+// 分开 CSS
+const ExtractPlugin = require('extract-text-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -11,7 +13,7 @@ const config = {
     entry: path.join(__dirname, 'src/todo_index.js'),
     // 编译好的代码存的地方
     output: {
-        filename: 'bundle.js',
+        filename: 'bundle.[hash:8].js',
         path: path.join(__dirname, 'dist')
     },
     module: {
@@ -22,25 +24,6 @@ const config = {
             }, {
                 test: /\.jsx$/,
                 loader: 'babel-loader'
-            }, {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            }, {
-                test: /\.styl/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    },
-                    'stylus-loader'
-                ]
             }, {
                 test: /\.(git|jpg|jpeg|png|svg)/,
                 use: [{
@@ -64,6 +47,20 @@ const config = {
 }
 
 if(isDev) {
+    config.module.rules.push({
+        test: /\.styl/,
+        use: [
+            'style-loader',
+            'css-loader',
+            {
+                loader: 'postcss-loader',
+                options: {
+                    sourceMap: true
+                }
+            },
+            'stylus-loader'
+        ]
+    })
     config.devtool = '#cheap-module-eval-source-map'
     config.devServer = {
         port: 7000,
@@ -73,6 +70,27 @@ if(isDev) {
         },
         open: true
     }
+} else {
+    config.output.filename = '[name].[chunkhash:8].js'
+    config.module.rules.push({
+        test: /\.styl/,
+        use: ExtractPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                },
+                'stylus-loader'
+            ]
+        })
+    })
+    config.plugins.push(
+        new ExtractPlugin('styles.[hash:8].css')
+    )
 }
 
 module.exports = config
