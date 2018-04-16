@@ -1,4 +1,4 @@
-# vue-todo
+# vue-todo [![Build Status](https://travis-ci.org/wh-Coder/lyjtodo.svg?branch=master)](https://travis-ci.org/wh-Coder/lyjtodo)
 
 > vue 入门
 
