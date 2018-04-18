@@ -1,6 +1,6 @@
 <template>
     <header class="main-header">
-        <h1>LYJtodo - lalala</h1>
+        <h1>LYJtodo</h1>
     </header>
 </template>
 
