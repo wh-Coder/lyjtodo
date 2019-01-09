@@ -1,0 +1,19 @@
+.footer {
+  text-align: center;
+  color: #000;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  background-image: url(er.aaa.png);
+  background-size: cover;
+  background-position: center;
+  font: 14px;
+  color: #4d4d4d;
+  font-weight: 300;
+}
