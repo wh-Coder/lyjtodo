@@ -1,12 +1,14 @@
 language: node_js
 node_js:
-  - "7"
-before_script: npm install
+  - "10"
+# before_script: npm install
 script: npm run build
 deploy:
+  # https://docs.travis-ci.com/user/deployment/pages/
   provider: pages
   skip_cleanup: true
   # token is set in travis-ci.org dashboard
+  keep-history: true
   github_token: $GITHUB_API_KEY
   on:
     branch: master
