@@ -10,7 +10,7 @@
 
 - 函数是一种对象，但是函数不像数组是对象的一个子集，有一种鸡生蛋蛋生鸡的逻辑
 
-- 对象是函数创建的：var obj = new Object(); Object、Array 都是function
+- 对象是函数创建的：```var obj = new Object();``` Object、Array 都是function
 
 - 对象是函数创建的，而函数却又是一种对象
 
@@ -18,34 +18,38 @@
 
 - 函数有个 prototype 属性值为一个对象，这个对象默认只有一个叫做 constructor 的属性，这个属性指向函数本身
 
-- 每个对象都是函数 new 出来的，并且都有一个默认的属性 __proto__，这个属性引用了创建这个对象的函数的prototype，即：obj.__proto__ === Object.prototype
+- 每个对象都是函数 new 出来的，并且都有一个默认的属性 ```__proto__```，这个属性引用了创建这个对象的函数的prototype，即：```obj.__proto__ === Object.prototype```
 
 ### 4
 
-- 每个对象都有 __proto__，而 Object.prototype 也是个对象，也应该有个 __proto__，是个特例，指向了 null
+- 每个对象都有 ```__proto__```，而 Object.prototype 也是个对象，也应该有个 ```__proto__```，是个特例，指向了 null
 
-- 普通的函数 Foo.__proto__ 指向 Function.prototype，有意思的是：Function.__proto__ 指向 Function.prototype循环了，即Function是被自身创建的
+- 普通的函数 ```Foo.__proto__``` 指向 ```Function.prototype```，有意思的是：```Function.__proto__``` 指向 ```Function.prototype```循环了，即Function是被自身创建的
 
-- 那么 Function.prototype是对象，它的__proto__ 指向Object.prototype
+- 那么 ```Function.prototype```是对象，它的```__proto__``` 指向```Object.prototype```
 
 ### 5
 
-- A instanceof B 的判断队则是：沿着A的__proto__这条线来找，同时沿着B的prototype这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false
+- ```A instanceof B``` 的判断队则是：沿着A的```__proto__```这条线来找，同时沿着B的```prototype```这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false
 
-- Object instanceof Function; Function instanceof Object; Function instanceof Function; 都是true，可以推理出来
+- ```Object instanceof Function; Function instanceof Object; Function instanceof Function;``` 都是true，可以推理出来
 
 - ![](http://ww1.sinaimg.cn/large/a75caef7gy1fze8hsv94tj20dk0geq69.jpg)
 
 
 ### 6
 
-- 访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着 __proto__ 这条链向上找，这就是原型链。
+- 访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着 ```__proto__``` 这条链向上找，这就是原型链。
 
 - 实际使用中，用 hasOwnProperty 区分属性到底是自己的还是原型链上的
 
 ### 8
 
-- 1）变量、函数表达式——-变量声明，默认赋值为undefined；2）this——-赋值；3）函数声明——-赋值；
+- 变量、函数表达式——-变量声明，默认赋值为undefined；
+
+- this——-赋值；
+
+- 函数声明——-赋值；
 
 ### 9
 
