@@ -150,12 +150,18 @@ function watchDialog() {
                     .then(function (_UiObject) {
                         if (_UiObject) {
                             myclick(_UiObject, 'detailPage').then(function () {
+
+                                // 从红包开页面到详情回来时不走红包开页面
+                                if (eventStack.slice(-2, -1)[0] === 'openPage') {
+                                    eventStack.splice(-2, 1)
+                                }
                                 myback();
                             }, function () {
                                 myback();
                             })
+                        } else {
+                            myback();
                         }
-                        myback();
                         return false
                     }, function () {
                         log('openPage错误')
