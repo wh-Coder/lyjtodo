@@ -22,6 +22,24 @@ const counter = (function () {
     }
 })()
 
+function p() {
+    return new Promise(function (resolve, reject) {
+        if (+new Date() % 2 === 0) {
+            resolve()
+        } else {
+            reject()
+        }
+    })
+}
+
 do {
     counter();
+    p().then(function () {
+        console.log('ok')
+    }).catch(function () {
+        console.log('error')
+    }).finally(function () {
+        console.log('done')
+    })
+
 } while (true);
