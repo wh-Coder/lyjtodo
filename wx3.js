@@ -1,18 +1,20 @@
 const DELAY = 50
-const LOG_DELAY = 5000
+const LOG_DELAY = 3000
+// 0 监听列表; 1 监听通知栏
+const AUTO_MODE = 1
 
-// wechat 7.0.0
-const WECHAT = 'com.tencent.mm:id/'
-const CLOSE_ID = WECHAT + 'k5' // 关闭按钮
-const LISTROW_ID = WECHAT + 'b4m' // 每一列容器的 ID
-const NUMBERPOINT_ID = WECHAT + 'mm' // 数字红点
-const ADD_BUTTON_ID = WECHAT + 'alr' // 聊天框的＋按钮
-const PACKET_OPEN_ID = WECHAT + 'cv0' // 红包按钮开
-const PACKET_LATE_ID = WECHAT + 'cuz' // ‘手慢了’文字
-const DETAIL_TEXT_ID = WECHAT + 'cqt' // 详情页红包描述
-const REDPACKET_ID = WECHAT + 'ao4' // 对话框里面的红包消息
-const BLANKPACKET_ID = WECHAT + 'ape' // 消息中‘已被领完’
-const VALIDPACKET_ID = WECHAT + 'apf' // 消息中‘微信红包’
+// WECHAT 7.0.0
+const PACKAGE = 'com.tencent.mm'
+const CLOSE_ID = PACKAGE + ':id/k5' // 关闭按钮
+const LISTROW_ID = PACKAGE + ':id/b4m' // 每一列容器的 ID
+const NUMBERPOINT_ID = PACKAGE + ':id/mm' // 数字红点
+const ADD_BUTTON_ID = PACKAGE + ':id/alr' // 聊天框的＋按钮
+const PACKET_OPEN_ID = PACKAGE + ':id/cv0' // 红包按钮开
+const PACKET_LATE_ID = PACKAGE + ':id/cuz' // ‘手慢了’文字
+const DETAIL_TEXT_ID = PACKAGE + ':id/cqt' // 详情页红包描述
+const REDPACKET_ID = PACKAGE + ':id/ao4' // 对话框里面的红包消息
+const BLANKPACKET_ID = PACKAGE + ':id/ape' // 消息中‘已被领完’
+const VALIDPACKET_ID = PACKAGE + ':id/apf' // 消息中‘微信红包’
 
 // cqv 金额
 const DETAIL_ACT = 'com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI'
@@ -24,6 +26,34 @@ console.setSize(200, 200);
 device.keepScreenOn();
 auto();
 
+function watchNotification() {
+    auto();
+    events.observeNotification();
+    events.onNotification(function (notification) {
+        if (notification.getPackageName() === PACKAGE && notification.getText().indexOf('[微信红包]')) {
+            notification.click();
+            printNotification(notification)
+            for (let i = 0; i < 100; i++) {
+                sleep(50);
+                if (watchDialog()) {
+                    break;
+                }
+            }
+            home();
+        }
+    });
+}
+
+function printNotification(notification) {
+    log("应用包名: " + notification.getPackageName());
+    log("通知文本: " + notification.getText());
+    log("通知优先级: " + notification.priority);
+    log("通知目录: " + notification.category);
+    log("通知时间: " + new Date(notification.when));
+    log("通知数: " + notification.number);
+    log("通知摘要: " + notification.tickerText);
+}
+
 const counter = (function () {
     let count = 0
     let logCount = 0
@@ -32,7 +62,7 @@ const counter = (function () {
         sleep(DELAY)
         if (++count > LOG_DELAY / DELAY) {
             count = 0
-            log("查找", ++logCount, currentActivity())
+            log("查找", ++logCount)
         }
     }
 })()
@@ -171,17 +201,25 @@ function watchDialog() {
             }
             return true
         })
+        return true
+    } else {
+        return false
     }
 }
 
 var eventStack = []
-
-do {
-    counter();
-    let page = judgePage()
-    if (page === 'listPage') {
-        watchList()
-    } else if (page === 'dialogPage') {
-        watchDialog()
-    }
-} while (true);
+if (AUTO_MODE === 0) {
+    log('监听列表')
+    do {
+        counter();
+        let page = judgePage()
+        if (page === 'listPage') {
+            watchList()
+        } else if (page === 'dialogPage') {
+            watchDialog()
+        }
+    } while (true);
+} else if (AUTO_MODE === 1) {
+    log('监听通知栏')
+    watchNotification()
+}
