@@ -33,7 +33,8 @@ function watchNotification() {
         if (notification.getPackageName() === PACKAGE && notification.getText().indexOf('[微信红包]')) {
             notification.click();
             printNotification(notification)
-            for (let i = 0; i < 100; i++) {
+            // 没有红包 50*50 ms 退出
+            for (let i = 0; i < 50; i++) {
                 sleep(50);
                 if (watchDialog()) {
                     break;
@@ -208,7 +209,8 @@ function watchDialog() {
 }
 
 var eventStack = []
-if (AUTO_MODE === 0) {
+
+threads.start(function () {
     log('监听列表')
     do {
         counter();
@@ -219,7 +221,9 @@ if (AUTO_MODE === 0) {
             watchDialog()
         }
     } while (true);
-} else if (AUTO_MODE === 1) {
+})
+
+if (AUTO_MODE === 1) {
     log('监听通知栏')
     watchNotification()
 }
